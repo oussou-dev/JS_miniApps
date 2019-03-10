@@ -1,0 +1,104 @@
+<!DOCTYPE>
+<html>
+
+<head>
+	<title>
+		Grocery List
+	</title>
+	<style>
+		td span {
+			font-size: 1em;
+			color: brown;
+			padding: 5px;
+		}
+
+		td:first-child {
+			width: 250px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+	<input type="text" id="addItem">
+    <input type="button" id="addNew" value="Add Item">
+    <div class="output"> </div>
+
+	<script>
+        let myList = ["bananas", "milk", "apples", "eggs", "cake"]
+        window.onload = build
+        const btnAdd = document.querySelector("#addNew")
+        const output = document.querySelector(".output")
+        const newItem = document.querySelector("#addItem")
+
+        btnAdd.addEventListener("click", function(){
+            // console.log("clicked")
+            if(newItem.value) {
+                myList.push(newItem.value)
+                newItem.value = ""
+                build()
+            }
+            
+        })
+
+        function build() {
+            output.innerHTML = "<h3> My List </h3>"
+            // console.log("ready")
+            const tbl = document.createElement("table")
+            for (let i = 0; i < myList.length; i++) {
+                const row = document.createElement("tr")
+                row.index = i
+               
+                const cell1 = document.createElement("td")
+                cell1.innerHTML = myList[i]
+                row.appendChild(cell1)
+                
+                const cell2 = document.createElement("td") 
+                //
+                const span1 = document.createElement("span")
+                span1.innerText = "Delete"
+                span1.addEventListener("click", function() {
+                    // console.log(myList[i])
+                    // let temp = this.closest("tr").index
+                    itemOut = myList.splice(i,1)
+                    // console.log(myList)
+                    // on reaffiche avec la new myList sans l'élément enlevé
+                    build()
+                })
+                cell2.appendChild(span1)
+                //
+                const span2 = document.createElement("span")
+                span2.innerText = "Edit"
+                //
+                span2.addEventListener("click", function() {
+                    row.style.backgroundColor = "yellow"
+                    let tempEl = row.firstElementChild
+                    // console.log(tempEl)
+                    const newInput = document.createElement("input")
+                    newInput.value = tempEl.innerText
+                    newInput.focus()
+                    tempEl.innerHTML = ""
+                    tempEl.appendChild(newInput)
+                    //
+                    newInput.addEventListener('blur', function() {
+                        tempEl.innerHTML = newInput.value
+                        row.style.backgroundColor = "white"
+                        myList[i] = newInput.value
+                        
+                    })
+
+                })
+                //
+                cell2.appendChild(span2)
+                //
+                row.appendChild(cell2)
+                
+                tbl.appendChild(row)
+            }
+            // console.log(tbl)
+            output.appendChild(tbl)
+        }
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE>
+<html>
+
+<head>
+	<title>
+		ClipBoard
+	</title>
+</head>
+
+<body>
+	<h3> Source Text </h3>
+	<textarea name="copyTxt" rows="3" cols="50">Hello World</textarea>
+    <br> <br>
+    <button class="moverBtn"> Move Text</button>
+    <button class="copyBtn"> Copy Text</button>
+    <br> <br>
+    <textarea name="finalTxt" rows="3" cols="50"> </textarea>
+    <br> <br>
+    <div class="output"></div>
+
+
+    <script>
+        const copyTxt = document.querySelector("textarea[name=copyTxt")
+        const finalTxt = document.querySelector("textarea[name=finalTxt")
+        const moverBtn = document.querySelector(".moverBtn")
+        const copyBtn = document.querySelector(".copyBtn")
+        const output = document.querySelector(".output")
+        
+        moverBtn.addEventListener("click", moveText)
+        copyBtn.addEventListener("click", copyText)
+        copyTxt.addEventListener("click", selAll)
+        finalTxt.addEventListener("click", selAll)
+
+        function moveText() {
+            let temp = copyTxt.value
+            finalTxt.value = temp
+        }
+
+        function copyText() {
+            let temp = copyTxt.value
+            copyToClipBoard(temp)
+        }
+
+        // select all text
+        function selAll() {
+            this.select()
+        }
+
+        function copyToClipBoard(str) {
+            // creation du textarea pour la saisie
+            const textarea = document.createElement("textarea")
+            // affectation d'un contenu dans le textarea
+            textarea.value = str
+            // on affiche le textarea et so contenu
+            document.body.appendChild(textarea)
+            // on selectionne le contenu
+            textarea.select()
+            // on copie le contenu dans le presse-papiers
+            document.execCommand("copy")
+            // on retire le textarea
+            document.body.removeChild(textarea)
+            // on affiche une notification + le contenu du textarea
+            output.innerHTML = `<h3> Copied Content </h3> ${textarea.value}`
+        }
+
+    </script>
+</body>
+
+</html>
